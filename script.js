@@ -5,14 +5,15 @@ function shuffle(array){
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
-} // -> Mischt ein Array per "Fisher-Yates-Algorithmus".
+}
+// Mischt ein Array per Fisher-Yates-Algorithmus.
 
 function formatTime(sec){
   const m = String(Math.floor(sec / 60)).padStart(2, '0');
   const s = String(sec % 60).padStart(2, '0');
   return `${m}:${s}`;
-} // -> Formatiert Sekunden in MM:SS.
-
+}
+// Formatiert Sekunden in MM:SS.
 
 // >> Spielzustand:
 const symbolsBase = [
@@ -24,26 +25,24 @@ const symbolsBase = [
   "bolonka.jpg",
   "labrador.jpg",
   "pudel.jpg",
-  "australianshepherd.jpg",
+  "australianshepherd.jpg",   // <- korrigiert
   "yorkshireterrier.jpg"
-].map(name => `images/${name}`);  // Bilddateien im Ordner "images/"
+].map(name => `images/${name}`);
 
-let symbols = [];           // das gemischte 20er-Deck (10 Motive x2)
-let firstCard = null;       // erste aufgedeckte Karte im Zug
-let secondCard = null;      // zweite aufgedeckte Karte im Zug
-let lockBoard = false;      // verhindert weitere Klicks
-let moves = 0;              // Anzahl der Züge
-let matchedPairs = 0;       // Anzahl gefundener Paare
-let seconds = 0;            // vergangene Zeit in Sekunden
-let timerId = null;         // ID des Timer-Intervals
-
+let symbols = [];
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+let moves = 0;
+let matchedPairs = 0;
+let seconds = 0;
+let timerId = null;
 
 // >> DOM - Referenzen:
 const boardEl    = document.getElementById("board");
 const movesEl    = document.getElementById("moves");
 const timeEl     = document.getElementById("time");
 const restartBtn = document.getElementById("restart");
-
 
 // >> Karten erstellen:
 function createCard(symbol, index){
@@ -61,7 +60,7 @@ function createCard(symbol, index){
 
   const img = document.createElement("img");
   img.className = "symbol-image";
-  img.src = symbol;           // symbol enthält bereits "images/..."
+  img.src = symbol;   // enthält bereits "images/.."
   img.alt = "Karte";
   front.appendChild(img);
 
@@ -70,7 +69,6 @@ function createCard(symbol, index){
   return card;
 }
 
-
 // >> Board aufbauen:
 function buildBoard(){
   boardEl.innerHTML = "";
@@ -78,8 +76,7 @@ function buildBoard(){
   symbols.forEach((sym, i) => boardEl.appendChild(createCard(sym, i)));
 }
 
-
-// >> Timer:
+// ---------- Timer ----------
 function startTimer(){
   stopTimer();
   seconds = 0;
@@ -94,8 +91,7 @@ function stopTimer(){
   timerId = null;
 }
 
-
-// >> Kartenklick:
+// ---------- Kartenklick ----------
 function onCardClick(e){
   const card = e.currentTarget;
   if(lockBoard) return;
@@ -108,11 +104,11 @@ function onCardClick(e){
     return;
   }
   if(firstCard.dataset.index === card.dataset.index){
-    return; // -> gleiche Karte erneut angeklickt
+    return; // gleiche Karte erneut angeklickt
   }
 
   secondCard = card;
-  lockBoard = true;                 // -> sofort sperren, bis Match/No-Match fertig ist
+  lockBoard = true;            // sofort sperren
   moves++;
   movesEl.textContent = moves;
   checkMatch();
@@ -148,24 +144,21 @@ function resetTurn(){
   lockBoard = false;
 }
 
-
-// >> Images vorladen:
+// ---------- Images vorladen ----------
 function preloadImages(paths){
   paths.forEach(p => { const i = new Image(); i.src = p; });
 }
 
-
-// >> Neustart:
+// ---------- Neustart ----------
 function restart(){
   moves = 0;
   matchedPairs = 0;
   movesEl.textContent = "0";
-  preloadImages(symbolsBase);   // Optionales Preload
+  preloadImages(symbolsBase);
   buildBoard();
   startTimer();
 }
 restartBtn.addEventListener("click", restart);
 
-
-// >> Spielstart:
+// ---------- Start ----------
 restart();

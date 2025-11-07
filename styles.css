@@ -1,4 +1,4 @@
-/* Reset & Vars */
+/* ========== Reset & Vars ========== */
 * { box-sizing: border-box; }
 :root{
   --card-w: 110px;
@@ -7,7 +7,7 @@
   --accent: black;
 }
 
-/* Grundlayout */
+/* ========== Grundlayout ========== */
 body{
   margin:0;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -18,7 +18,7 @@ body{
   background:#0b1220;
 }
 
-/* HEADER */
+/* ========== HEADER ========== */
 .topbar{
   position: relative;
   width: 100%;
@@ -49,7 +49,7 @@ body{
   z-index: 1;
   pointer-events: none;
 }
-.title, .stats-row, .btn-restart{ position: relative; z-index: 2; }
+.title, .subtitle, .stats-row, .btn-restart{ position: relative; z-index: 2; }
 
 .title{
   margin: 0 0 20px 0;
@@ -98,14 +98,13 @@ body{
   filter: brightness(1.08);
 }
 
-/* SPIELBEREICH - MAIN */
+/* ========== SPIELBEREICH ========== */
 main{
   flex:1;
   display:grid;
   place-items:center;
   padding:24px;
 
-  /* Hintergrund */
   background-image: url("images/hintergrund.jpg");
   background-size: cover;
   background-position: center;
@@ -117,10 +116,10 @@ main{
   grid-template-columns: repeat(5, var(--card-w));
   grid-auto-rows: var(--card-h);
   gap:14px;
-  perspective: 1000px; /* -> 3D-Kontext für Flip */
+  perspective: 1000px;
 }
 
-/* Karten & Flip */
+/* ========== Karte + Flip ========== */
 .card{
   position:relative;
   width:var(--card-w);
@@ -150,7 +149,7 @@ main{
   box-shadow: none;
 }
 
-/* Vorder- & Rückseite der Karten */
+/* ========== Vorder- & Rückseite (stabil) ========== */
 .card__face{
   position:absolute;
   inset:0;
@@ -159,25 +158,21 @@ main{
   border-radius: var(--radius);
 
   backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* Safari/WebKit */
 
   z-index: 0;
 }
 .card__face--front{ z-index: 1; }
 
-/* Rückseite sichtbar */
 .card__face--back{
   transform: rotateY(0deg);
-
   background-image: url("images/rueckseite.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-
   border:1px solid #263041;
 }
 
-/* Vorderseite füllt komplett */
 .card__face--front{
   transform: rotateY(180deg);
   overflow: hidden;
@@ -185,7 +180,6 @@ main{
   border:1px solid #e5e7eb;
 }
 
-/* Bild auf der Vorderseite */
 .symbol-image{
   width:100%;
   height:100%;
@@ -194,7 +188,7 @@ main{
   pointer-events:none;
 }
 
-/* Responsiv */
+/* ========== Responsiv ========== */
 @media (max-width: 640px){
   :root{
     --card-w: 80px;
