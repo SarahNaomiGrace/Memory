@@ -31,7 +31,7 @@ const symbolsBase = [
   "pudel.jpg",
   "austrailianshepherd.jpg",
   "yorkshireterrier.jpg"
-];  // Bilddateien eingebunden.
+].map(name => `images/${name}`);  // Bilddateien eingebunden.
 
 let symbols = [];           // das gemischte 20er-Deck (10 Motive x2)
 let firstCard = null;       // erste aufgedeckte Karte im Zug
