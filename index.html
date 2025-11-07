@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Memory</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <img src="images/titelbild.jpg" alt="" class="topbar-img" />
+
+    <h1 class="title">Memory</h1>
+    <h2 class="subtitle">Who let the dogs out?!</h2>
+
+    <div class="stats-row">
+      <div class="stat stat-moves">Züge: <strong id="moves">0</strong></div>
+      <div class="stat stat-time">Zeit: <strong id="time">00:00</strong></div>
+    </div>
+
+    <button id="restart" class="btn-restart">Neu starten</button>
+  </header>
+
+  <main>
+    <section id="board" class="board" aria-label="Memory-Spielbrett"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
