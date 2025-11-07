@@ -29,7 +29,7 @@ const symbolsBase = [
   "bolonka.jpg",
   "labrador.jpg",
   "pudel.jpg",
-  "austrailianshepherd.jpg",
+  "australianshepherd.jpg",
   "yorkshireterrier.jpg"
 ].map(name => `images/${name}`);  // Bilddateien eingebunden.
 
@@ -70,7 +70,7 @@ function createCard(symbol, index){
 
   const img = document.createElement("img");
   img.className = "symbol-image";
-  img.src = `images/${symbol}`;
+  img.src = symbol;
   img.alt = "Karte";
   front.appendChild(img);
     // Rückseite einheitlich, Vorderseite mit Bild. 
