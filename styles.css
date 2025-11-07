@@ -1,3 +1,4 @@
+/* Reset & Vars */
 * { box-sizing: border-box; }
 :root{
   --card-w: 110px;
@@ -14,7 +15,7 @@ body{
   min-height:100vh;
   display:flex;
   flex-direction:column;
-  background: #0b1220; 
+  background:#0b1220;
 }
 
 /* HEADER */
@@ -27,57 +28,43 @@ body{
   align-items: center;
   justify-content: center;
   text-align: center;
-  overflow: hidden; 
+  overflow: hidden;
 }
-
-/* Unscharfe, vollflächige Hintergrund-Füllung */
 .topbar::before{
   content: "";
   position: absolute;
-  inset: -20px; 
+  inset: -20px;
   background: url("images/titelbild.jpg") center/cover no-repeat;
   filter: blur(14px) brightness(0.9);
-  transform: scale(1.06); 
+  transform: scale(1.06);
   z-index: 0;
 }
-
 .topbar-img{
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; 
+  object-fit: contain;
   object-position: center;
   z-index: 1;
   pointer-events: none;
 }
-
-.title, .stats-row, .btn-restart{
-  position: relative;
-  z-index: 2;
-}
+.title, .stats-row, .btn-restart{ position: relative; z-index: 2; }
 
 .title{
-  margin: 0 0 20px 0; 
+  margin: 0 0 20px 0;
   font-size: clamp(2rem, 4vw, 3rem);
   color: black;
   font-weight: 900;
   text-shadow: 0 2px 6px rgba(0,0,0,0.6);
 }
-
-.subtitle, .stats-row, .btn-restart{
-  position: relative;
-  z-index: 2;
-}
-
 .subtitle{
-  margin: 0 0 18px 0; 
+  margin: 0 0 18px 0;
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   color: black;
   font-weight: 700;
   text-shadow: 0 2px 6px rgba(0,0,0,0.6);
 }
-
 .stats-row{
   display:flex;
   gap:16px;
@@ -94,7 +81,7 @@ body{
 .stat strong{ font-weight: 900; }
 
 .btn-restart{
-  margin-top: 28px;          
+  margin-top: 28px;
   padding: 10px 16px;
   border: none;
   border-radius: 10px;
@@ -111,13 +98,14 @@ body{
   filter: brightness(1.08);
 }
 
-/* SPIELBEREICH */
+/* SPIELBEREICH - MAIN */
 main{
   flex:1;
   display:grid;
   place-items:center;
   padding:24px;
 
+  /* Hintergrund */
   background-image: url("images/hintergrund.jpg");
   background-size: cover;
   background-position: center;
@@ -129,59 +117,79 @@ main{
   grid-template-columns: repeat(5, var(--card-w));
   grid-auto-rows: var(--card-h);
   gap:14px;
-  perspective: 1000px; 
+  perspective: 1000px; /* -> 3D-Kontext für Flip */
 }
 
-/* Karte + Flip-Animation */
+/* Karten & Flip */
 .card{
   position:relative;
   width:var(--card-w);
   height:var(--card-h);
   cursor:pointer;
+
   transform-style: preserve-3d;
   transition: transform 0.5s ease;
+
   border-radius: var(--radius);
   box-shadow: 0 2px 8px rgba(0,0,0,.3);
   background: transparent;
+
+  /* Button neutralisieren */
+  border: 0;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
 }
-.card.is-flipped{
-  transform: rotateY(180deg);
-}
+.card:focus { outline: none; }
+.card:focus-visible { outline: 2px solid #60a5fa; }
+
+.card.is-flipped{ transform: rotateY(180deg); }
 .card.matched{
   cursor: default;
   outline: 2px solid #22c55e;
   box-shadow: none;
 }
 
-/* Vorder- & Rückseite */
+/* Vorder- & Rückseite der Karten */
 .card__face{
   position:absolute;
   inset:0;
   display:grid;
   place-items:center;
   border-radius: var(--radius);
-  backface-visibility: hidden;
-}
 
-/* Kartenrücken (optional: eigenes Bild hinterlegen) */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  z-index: 0;
+}
+.card__face--front{ z-index: 1; }
+
+/* Rückseite sichtbar */
 .card__face--back{
-  background-image: url("images/rueckseite.jpg"); /* optional, sonst fallback */
+  transform: rotateY(0deg);
+
+  background-image: url("images/rueckseite.jpg");
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+
   border:1px solid #263041;
 }
 
-/* Vorderseite (Bild füllt komplette Fläche) */
+/* Vorderseite füllt komplett */
 .card__face--front{
   transform: rotateY(180deg);
   overflow: hidden;
   border-radius: inherit;
   border:1px solid #e5e7eb;
 }
+
+/* Bild auf der Vorderseite */
 .symbol-image{
   width:100%;
   height:100%;
-  object-fit:cover;  
+  object-fit:cover;
   display:block;
   pointer-events:none;
 }

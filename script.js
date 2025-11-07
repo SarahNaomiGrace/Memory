@@ -5,18 +5,13 @@ function shuffle(array){
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
-}
-  // Mischt ein Array per Fisher-Yates-Algorithmus. 
-  // Dadurch Gleichverteiltes, faires Mischen ohne Bias.
+} // -> Mischt ein Array per "Fisher-Yates-Algorithmus".
 
 function formatTime(sec){
   const m = String(Math.floor(sec / 60)).padStart(2, '0');
   const s = String(sec % 60).padStart(2, '0');
   return `${m}:${s}`;
-}
-  // Formatiert Sekunden in MM:SS Format.
-  // Macht es lesbar im UI, führende Nullen durch padStart.
-
+} // -> Formatiert Sekunden in MM:SS.
 
 
 // >> Spielzustand:
@@ -31,17 +26,16 @@ const symbolsBase = [
   "pudel.jpg",
   "australianshepherd.jpg",
   "yorkshireterrier.jpg"
-].map(name => `images/${name}`);  // Bilddateien eingebunden.
+].map(name => `images/${name}`);  // Bilddateien im Ordner "images/"
 
 let symbols = [];           // das gemischte 20er-Deck (10 Motive x2)
 let firstCard = null;       // erste aufgedeckte Karte im Zug
 let secondCard = null;      // zweite aufgedeckte Karte im Zug
-let lockBoard = false;      // verhindert weitere Klicks während der Animation
+let lockBoard = false;      // verhindert weitere Klicks
 let moves = 0;              // Anzahl der Züge
-let matchedPairs = 0;       // Anzahl der gefundenen Paare
+let matchedPairs = 0;       // Anzahl gefundener Paare
 let seconds = 0;            // vergangene Zeit in Sekunden
 let timerId = null;         // ID des Timer-Intervals
-
 
 
 // >> DOM - Referenzen:
@@ -49,18 +43,15 @@ const boardEl    = document.getElementById("board");
 const movesEl    = document.getElementById("moves");
 const timeEl     = document.getElementById("time");
 const restartBtn = document.getElementById("restart");
-  // greift auf die UI-Elemente zu ("").
-  // wird für Rendering und Interaktionen gebraucht.
-
 
 
 // >> Karten erstellen:
 function createCard(symbol, index){
-  const card = document.createElement("button");  
-  card.className = "card";    
-  card.type = "button";            
-  card.dataset.symbol = symbol;   // Motivname
-  card.dataset.index = index;     // Eindeutiger Index im Deck
+  const card = document.createElement("button");
+  card.className = "card";
+  card.type = "button";
+  card.dataset.symbol = symbol;
+  card.dataset.index = index;
 
   const back = document.createElement("div");
   back.className = "card__face card__face--back";
@@ -70,30 +61,25 @@ function createCard(symbol, index){
 
   const img = document.createElement("img");
   img.className = "symbol-image";
-  img.src = symbol;
+  img.src = symbol;           // symbol enthält bereits "images/..."
   img.alt = "Karte";
   front.appendChild(img);
-    // Rückseite einheitlich, Vorderseite mit Bild. 
-    // CSS-Klassen sorgen via 3D-Flip dafür, dass die Karten umklappen.
 
   card.append(back, front);
   card.addEventListener("click", onCardClick);
   return card;
-    // Event-Handler pro Karte für Klicks.
 }
 
 
-
-// >> Board-Aufbau:
+// >> Board aufbauen:
 function buildBoard(){
   boardEl.innerHTML = "";
   symbols = shuffle([...symbolsBase, ...symbolsBase]);
   symbols.forEach((sym, i) => boardEl.appendChild(createCard(sym, i)));
 }
-  // Hier wird das Board geleert, Motive dupliziert, mischt sie und erzeugt 
-  // DOM-Karten,die dem Board wieder hinzugefügt werden.
 
-// ---------- Timer ----------
+
+// >> Timer:
 function startTimer(){
   stopTimer();
   seconds = 0;
@@ -108,7 +94,8 @@ function stopTimer(){
   timerId = null;
 }
 
-// ---------- Kartenklick ----------
+
+// >> Kartenklick:
 function onCardClick(e){
   const card = e.currentTarget;
   if(lockBoard) return;
@@ -121,10 +108,11 @@ function onCardClick(e){
     return;
   }
   if(firstCard.dataset.index === card.dataset.index){
-    return; 
+    return; // -> gleiche Karte erneut angeklickt
   }
 
   secondCard = card;
+  lockBoard = true;                 // -> sofort sperren, bis Match/No-Match fertig ist
   moves++;
   movesEl.textContent = moves;
   checkMatch();
@@ -147,7 +135,6 @@ function checkMatch(){
       }, 300);
     }
   } else {
-    lockBoard = true;
     setTimeout(() => {
       firstCard.classList.remove("is-flipped");
       secondCard.classList.remove("is-flipped");
@@ -161,15 +148,24 @@ function resetTurn(){
   lockBoard = false;
 }
 
-// ---------- Neustart ----------
+
+// >> Images vorladen:
+function preloadImages(paths){
+  paths.forEach(p => { const i = new Image(); i.src = p; });
+}
+
+
+// >> Neustart:
 function restart(){
   moves = 0;
   matchedPairs = 0;
   movesEl.textContent = "0";
+  preloadImages(symbolsBase);   // Optionales Preload
   buildBoard();
   startTimer();
 }
 restartBtn.addEventListener("click", restart);
 
-// ---------- Start ----------
+
+// >> Spielstart:
 restart();
