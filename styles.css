@@ -188,11 +188,89 @@ main{
   pointer-events:none;
 }
 
-/* ========== Responsiv ========== */
+/* ========== Responsive Layout ========== */
+
+/* Tablets / kleinere Laptops */
+@media (max-width: 900px){
+  :root{
+    --card-w: 90px;
+    --card-h: 120px;
+  }
+
+  body{
+    font-size: 15px;
+  }
+
+  .topbar{
+    min-height: 260px;
+  }
+
+  .board{
+    gap: 10px;
+  }
+}
+
+/* Smartphones im Hochformat */
 @media (max-width: 640px){
   :root{
-    --card-w: 80px;
-    --card-h: 100px;
+    --card-w: 70px;
+    --card-h: 95px;
   }
-  .board{ gap:10px; }
+
+  body{
+    font-size: 14px;
+  }
+
+  .topbar{
+    min-height: 230px;
+    padding: 8px 12px;
+  }
+
+  .title{
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+
+  .subtitle{
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  .stats-row{
+    gap: 10px;
+    font-size: 0.95rem;
+  }
+
+  .btn-restart{
+    margin-top: 18px;
+    padding: 8px 14px;
+    font-size: 0.95rem;
+  }
+
+  main{
+    padding: 16px 8px 24px;
+  }
+
+  /* Brett etwas schmaler, 4 Karten pro Reihe – passt besser auf schmale Bildschirme */
+  .board{
+    grid-template-columns: repeat(4, var(--card-w));
+    gap: 8px;
+  }
 }
+
+/* Sehr kleine Geräte (z.B. ältere Smartphones) */
+@media (max-width: 420px){
+  :root{
+    --card-w: 62px;
+    --card-h: 85px;
+  }
+
+  .board{
+    gap: 6px;
+  }
+
+  .title{
+    font-size: 1.6rem;
+  }
+}
+
