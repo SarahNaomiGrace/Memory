@@ -5,6 +5,8 @@
   --card-h: 140px;
   --radius: 14px;
   --accent: black;
+  /* Damit der Dark-Mode übergangen wird: */
+  color-scheme: light;
 }
 
 /* ========== Grundlayout ========== */
@@ -272,5 +274,14 @@ main{
   .title{
     font-size: 1.6rem;
   }
+}
+
+/* ========== Dark Mode Override ========== */
+  img,
+  .topbar-img,
+  .card__face--front,
+  .card__face--back {
+    filter: none !important;
+    mix-blend-mode: normal !important;
 }
 
